@@ -10,7 +10,7 @@ datagroup:billing_datagroup {
 }
 
 datagroup:pricing_datagroup {
-  sql_trigger: select max(export_time) from `@{BILLING_TABLE}`;;
+  sql_trigger: select max(export_time) from `@{PRICING_TABLE}`;;
   description: "Triggers a rebuild when new data is exported"
 }
 
