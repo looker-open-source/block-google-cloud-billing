@@ -5,12 +5,12 @@ include: "/views/*.view.lkml"
 include: "/dashboards/*"
 
 datagroup:billing_datagroup {
-  sql_trigger: select max(export_time) from`anilgcp-co-dev.billing.gcp_billing_export_public`;;
+  sql_trigger: select max(export_time) from`@{BILLING_TABLE}`;;
   description: "Triggers a rebuild when new data is exported"
 }
 
 datagroup:pricing_datagroup {
-  sql_trigger: select max(export_time) from `anilgcp-co-dev.billing.cloud_pricing_export`;;
+  sql_trigger: select max(export_time) from `@{BILLING_TABLE}`;;
   description: "Triggers a rebuild when new data is exported"
 }
 

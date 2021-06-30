@@ -1,5 +1,5 @@
 view: recommendations_export {
-  sql_table_name: @{RECOMMENDATION_TABLE};;
+  sql_table_name: `@{RECOMMENDATION_TABLE}`;;
 
   dimension_group: _partitiondate {
     hidden: yes
