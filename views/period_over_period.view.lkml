@@ -29,6 +29,7 @@ view: +gcp_billing_export {
   # To get start date we need to get either first day of the year, month or quarter
   dimension: first_date_in_period {
     view_label: "Period over Period"
+    datatype: date
     type: date
     hidden: no
     sql: DATE_TRUNC(CURRENT_DATE(), {% parameter period %});;
@@ -37,6 +38,7 @@ view: +gcp_billing_export {
   #Now get the total number of days in the period
   dimension: days_in_period {
     view_label: "Period over Period"
+    datatype: date
     type: number
     hidden: no
     sql: DATE_DIFF(CURRENT_DATE(),${first_date_in_period}, DAY) ;;
@@ -45,6 +47,7 @@ view: +gcp_billing_export {
   #Now get the first date in the prior period
   dimension: first_date_in_prior_period {
     view_label: "Period over Period"
+    datatype: date
     type: date
     hidden: no
     sql: DATE_TRUNC(DATE_ADD(CURRENT_DATE(), INTERVAL -1 {% parameter period %}),{% parameter period %});;
@@ -52,6 +55,7 @@ view: +gcp_billing_export {
 
   #Now get the last date in the prior period
   dimension: last_date_in_prior_period {
+  datatype: date
     view_label: "Period over Period"
     type: date
     hidden: no
