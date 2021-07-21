@@ -1,11 +1,10 @@
 {
-  "label": "Cloud Billing - GCP",
+  "label": "Cloud Cost Management: GCP",
   "category_label": "Models",
   "branding": {
     "image_uri": "https://marketplace-api.looker.com/block-icons/google-cloud.png",
     "tagline": "Analyze spend across Google Cloud resources to make informed budget decisions and reduce expenses."
   },
-
   "constants": {
     "CONNECTION": {
       "label": "Connection Name",
