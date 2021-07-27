@@ -141,7 +141,7 @@
     height: 2
   - title: MTD Costs
     name: MTD Costs
-    model: beta_multicloud_billing
+    model: gcp_billing_block
     explore: gcp_billing
     type: single_value
     fields: [gcp_billing.period_selected, gcp_billing.total_cost]
