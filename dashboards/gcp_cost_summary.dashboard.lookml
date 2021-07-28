@@ -8,14 +8,14 @@
     model: gcp_billing_block
     explore: gcp_billing_export
     type: single_value
-    fields: [gcp_billing.period_selected, gcp_billing.total_cost]
+    fields: [gcp_billing_export.period_selected, gcp_billing_export.total_cost]
     filters:
-      gcp_billing.period: Year
-      gcp_billing.period_selected: "-NULL"
-    sorts: [gcp_billing.period_selected desc]
+      gcp_billing_export.period: Year
+      gcp_billing_export.period_selected: "-NULL"
+    sorts: [gcp_billing_export.period_selected desc]
     limit: 500
     dynamic_fields: [{_kind_hint: measure, table_calculation: change, _type_hint: number,
-        category: table_calculation, expression: "${gcp_billing.total_cost}/offset(${gcp_billing.total_cost},1)-1",
+        category: table_calculation, expression: "${gcp_billing_export.total_cost}/offset(${gcp_billing_export.total_cost},1)-1",
         label: Change, value_format: !!null '', value_format_name: percent_1}]
     query_timezone: user_timezone
     custom_color_enabled: true
@@ -76,14 +76,14 @@
     model: gcp_billing_block
     explore: gcp_billing_export
     type: single_value
-    fields: [gcp_billing.period_selected, gcp_billing.total_cost]
+    fields: [gcp_billing_export.period_selected, gcp_billing_export.total_cost]
     filters:
-      gcp_billing.period: Week
-      gcp_billing.period_selected: "-NULL"
-    sorts: [gcp_billing.period_selected desc]
+      gcp_billing_export.period: Week
+      gcp_billing_export.period_selected: "-NULL"
+    sorts: [gcp_billing_export.period_selected desc]
     limit: 500
     dynamic_fields: [{_kind_hint: measure, table_calculation: change, _type_hint: number,
-        category: table_calculation, expression: "${gcp_billing.total_cost}/offset(${gcp_billing.total_cost},1)-1",
+        category: table_calculation, expression: "${gcp_billing_export.total_cost}/offset(${gcp_billing_export.total_cost},1)-1",
         label: Change, value_format: !!null '', value_format_name: percent_1}]
     query_timezone: user_timezone
     custom_color_enabled: true
@@ -144,14 +144,14 @@
     model: gcp_billing_block
     explore: gcp_billing_export
     type: single_value
-    fields: [gcp_billing.period_selected, gcp_billing.total_cost]
+    fields: [gcp_billing_export.period_selected, gcp_billing_export.total_cost]
     filters:
-      gcp_billing.period: Month
-      gcp_billing.period_selected: "-NULL"
-    sorts: [gcp_billing.period_selected desc]
+      gcp_billing_export.period: Month
+      gcp_billing_export.period_selected: "-NULL"
+    sorts: [gcp_billing_export.period_selected desc]
     limit: 500
     dynamic_fields: [{_kind_hint: measure, table_calculation: change, _type_hint: number,
-        category: table_calculation, expression: "${gcp_billing.total_cost}/offset(${gcp_billing.total_cost},1)-1",
+        category: table_calculation, expression: "${gcp_billing_export.total_cost}/offset(${gcp_billing_export.total_cost},1)-1",
         label: Change, value_format: !!null '', value_format_name: percent_1}]
     query_timezone: user_timezone
     custom_color_enabled: true
@@ -212,14 +212,14 @@
     model: gcp_billing_block
     explore: gcp_billing_export
     type: single_value
-    fields: [gcp_billing.period_selected, gcp_billing.total_cost]
+    fields: [gcp_billing_export.period_selected, gcp_billing_export.total_cost]
     filters:
-      gcp_billing.period: Quarter
-      gcp_billing.period_selected: "-NULL"
-    sorts: [gcp_billing.period_selected desc]
+      gcp_billing_export.period: Quarter
+      gcp_billing_export.period_selected: "-NULL"
+    sorts: [gcp_billing_export.period_selected desc]
     limit: 500
     dynamic_fields: [{_kind_hint: measure, table_calculation: change, _type_hint: number,
-        category: table_calculation, expression: "${gcp_billing.total_cost}/offset(${gcp_billing.total_cost},1)-1",
+        category: table_calculation, expression: "${gcp_billing_export.total_cost}/offset(${gcp_billing_export.total_cost},1)-1",
         label: Change, value_format: !!null '', value_format_name: percent_1}]
     query_timezone: user_timezone
     custom_color_enabled: true
@@ -290,22 +290,22 @@
     - model: gcp_billing_block
       explore: gcp_billing_export
       type: table
-      fields: [gcp_billing.usage_start_week, gcp_billing.total_cost]
-      fill_fields: [gcp_billing.usage_start_week]
+      fields: [gcp_billing_export.usage_start_week, gcp_billing_export.total_cost]
+      fill_fields: [gcp_billing_export.usage_start_week]
       filters:
-        gcp_billing.usage_start_week: 52 weeks
-      sorts: [gcp_billing.usage_start_week desc]
+        gcp_billing_export.usage_start_week: 52 weeks
+      sorts: [gcp_billing_export.usage_start_week desc]
       limit: 500
       query_timezone: America/Los_Angeles
       join_fields: []
     - model: gcp_billing_block
       explore: gcp_billing_export
       type: looker_column
-      fields: [gcp_billing__credits.total_amount, gcp_billing.usage_start_week]
-      fill_fields: [gcp_billing.usage_start_week]
+      fields: [gcp_billing_export__credits.total_amount, gcp_billing_export.usage_start_week]
+      fill_fields: [gcp_billing_export.usage_start_week]
       filters:
-        gcp_billing.usage_start_week: 52 weeks
-      sorts: [gcp_billing.usage_start_week desc]
+        gcp_billing_export.usage_start_week: 52 weeks
+      sorts: [gcp_billing_export.usage_start_week desc]
       limit: 500
       x_axis_gridlines: false
       y_axis_gridlines: true
@@ -337,8 +337,8 @@
       series_types: {}
       defaults_version: 1
       join_fields:
-      - field_name: gcp_billing.usage_start_week
-        source_field_name: gcp_billing.usage_start_week
+      - field_name: gcp_billing_export.usage_start_week
+        source_field_name: gcp_billing_export.usage_start_week
     color_application:
       collection_id: google
       palette_id: google-categorical-0
@@ -395,15 +395,15 @@
     show_silhouette: false
     totals_color: "#808080"
     type: looker_column
-    hidden_fields: [gcp_billing__credits.total_amount, gcp_billing.total_cost]
-    sorts: [gcp_billing.usage_start_week desc]
+    hidden_fields: [gcp_billing_export__credits.total_amount, gcp_billing_export.total_cost]
+    sorts: [gcp_billing_export.usage_start_week desc]
     dynamic_fields: [{_kind_hint: measure, table_calculation: net_cost, _type_hint: number,
-        category: table_calculation, expression: 'if(is_null(${credits}),${gcp_billing.total_cost},${gcp_billing.total_cost}-${gcp_billing__credits.total_amount})',
+        category: table_calculation, expression: 'if(is_null(${credits}),${gcp_billing_export.total_cost},${gcp_billing_export.total_cost}-${gcp_billing_export__credits.total_amount})',
         label: Net Cost, value_format: !!null '', value_format_name: usd_0}, {_kind_hint: measure,
         table_calculation: credits, _type_hint: number, category: table_calculation,
-        expression: "${gcp_billing__credits.total_amount}*-1", label: Credits, value_format: !!null '',
+        expression: "${gcp_billing_export__credits.total_amount}*-1", label: Credits, value_format: !!null '',
         value_format_name: usd_0}, {_kind_hint: measure, table_calculation: total_cost,
-        _type_hint: number, category: table_calculation, expression: 'if(is_null(${net_cost}),${gcp_billing.total_cost},${gcp_billing.total_cost}-${net_cost})',
+        _type_hint: number, category: table_calculation, expression: 'if(is_null(${net_cost}),${gcp_billing_export.total_cost},${gcp_billing_export.total_cost}-${net_cost})',
         label: Total Cost, value_format: !!null '', value_format_name: usd_0}, {_kind_hint: measure,
         table_calculation: 4_week_average, _type_hint: number, category: table_calculation,
         expression: 'mean(offset_list(${net_cost},0,4))', label: 4-Week Average, value_format: !!null '',
@@ -427,9 +427,9 @@
     - model: gcp_billing_block
       explore: gcp_billing_export
       type: table
-      fields: [merge, gcp_billing__credits.total_amount]
+      fields: [merge, gcp_billing_export__credits.total_amount]
       filters:
-        gcp_billing.usage_start_week: 52 weeks
+        gcp_billing_export.usage_start_week: 52 weeks
       limit: 500
       dynamic_fields: [{dimension: merge, _kind_hint: dimension, _type_hint: number,
           category: dimension, expression: '1', label: MERGE, value_format: !!null '',
@@ -439,9 +439,9 @@
     - model: gcp_billing_block
       explore: gcp_billing_export
       type: table
-      fields: [merge, gcp_billing.total_cost]
+      fields: [merge, gcp_billing_export.total_cost]
       filters:
-        gcp_billing.usage_start_week: 52 weeks
+        gcp_billing_export.usage_start_week: 52 weeks
       limit: 500
       dynamic_fields: [{dimension: merge, _kind_hint: dimension, _type_hint: number,
           category: dimension, expression: '1', label: MERGE, value_format: !!null '',
@@ -520,19 +520,19 @@
     show_silhouette: false
     totals_color: "#808080"
     type: single_value
-    hidden_fields: [credits, net_cost, total_cost, 4_week_average, merge, gcp_billing.total_cost]
+    hidden_fields: [credits, net_cost, total_cost, 4_week_average, merge, gcp_billing_export.total_cost]
     dynamic_fields: [{_kind_hint: measure, table_calculation: net_cost, _type_hint: number,
-        category: table_calculation, expression: 'if(is_null(${credits}),${gcp_billing.total_cost},${gcp_billing.total_cost}-${gcp_billing__credits.total_amount})',
+        category: table_calculation, expression: 'if(is_null(${credits}),${gcp_billing_export.total_cost},${gcp_billing_export.total_cost}-${gcp_billing_export__credits.total_amount})',
         label: Net Cost, value_format: !!null '', value_format_name: usd_0}, {_kind_hint: measure,
         table_calculation: credits, _type_hint: number, category: table_calculation,
-        expression: "${gcp_billing__credits.total_amount}*-1", label: Credits, value_format: !!null '',
+        expression: "${gcp_billing_export__credits.total_amount}*-1", label: Credits, value_format: !!null '',
         value_format_name: usd_0}, {_kind_hint: measure, table_calculation: total_cost,
-        _type_hint: number, category: table_calculation, expression: 'if(is_null(${net_cost}),${gcp_billing.total_cost},${gcp_billing.total_cost}-${net_cost})',
+        _type_hint: number, category: table_calculation, expression: 'if(is_null(${net_cost}),${gcp_billing_export.total_cost},${gcp_billing_export.total_cost}-${net_cost})',
         label: Total Cost, value_format: !!null '', value_format_name: usd_0}, {_kind_hint: measure,
         table_calculation: 4_week_average, _type_hint: number, category: table_calculation,
         expression: 'mean(offset_list(${net_cost},0,4))', label: 4-Week Average, value_format: !!null '',
         value_format_name: usd_0}, {_kind_hint: measure, table_calculation: percent_of_total_cost,
-        _type_hint: number, category: table_calculation, expression: "${gcp_billing__credits.total_amount}/${gcp_billing.total_cost}",
+        _type_hint: number, category: table_calculation, expression: "${gcp_billing_export__credits.total_amount}/${gcp_billing_export.total_cost}",
         label: Percent of Total Cost, value_format: !!null '', value_format_name: percent_0}]
     row: 12
     col: 0
@@ -545,22 +545,22 @@
     - model: gcp_billing_block
       explore: gcp_billing_export
       type: table
-      fields: [gcp_billing.usage_start_week, gcp_billing.total_cost]
-      fill_fields: [gcp_billing.usage_start_week]
+      fields: [gcp_billing_export.usage_start_week, gcp_billing_export.total_cost]
+      fill_fields: [gcp_billing_export.usage_start_week]
       filters:
-        gcp_billing.usage_start_week: 52 weeks
-      sorts: [gcp_billing.usage_start_week desc]
+        gcp_billing_export.usage_start_week: 52 weeks
+      sorts: [gcp_billing_export.usage_start_week desc]
       limit: 500
       query_timezone: America/Los_Angeles
       join_fields: []
     - model: gcp_billing_block
       explore: gcp_billing_export
       type: looker_column
-      fields: [gcp_billing__credits.total_amount, gcp_billing.usage_start_week]
-      fill_fields: [gcp_billing.usage_start_week]
+      fields: [gcp_billing_export__credits.total_amount, gcp_billing_export.usage_start_week]
+      fill_fields: [gcp_billing_export.usage_start_week]
       filters:
-        gcp_billing.usage_start_week: 52 weeks
-      sorts: [gcp_billing.usage_start_week desc]
+        gcp_billing_export.usage_start_week: 52 weeks
+      sorts: [gcp_billing_export.usage_start_week desc]
       limit: 500
       x_axis_gridlines: false
       y_axis_gridlines: true
@@ -592,8 +592,8 @@
       series_types: {}
       defaults_version: 1
       join_fields:
-      - field_name: gcp_billing.usage_start_week
-        source_field_name: gcp_billing.usage_start_week
+      - field_name: gcp_billing_export.usage_start_week
+        source_field_name: gcp_billing_export.usage_start_week
     color_application:
       collection_id: google
       palette_id: google-categorical-0
@@ -603,8 +603,8 @@
     x_axis_gridlines: false
     y_axis_gridlines: false
     show_view_names: false
-    y_axes: [{label: '', orientation: left, series: [{axisId: gcp_billing__credits.total_amount,
-            id: gcp_billing__credits.total_amount, name: Total Credit Amount}, {axisId: net_cost,
+    y_axes: [{label: '', orientation: left, series: [{axisId: gcp_billing_export__credits.total_amount,
+            id: gcp_billing_export__credits.total_amount, name: Total Credit Amount}, {axisId: net_cost,
             id: net_cost, name: Net Cost}], showLabels: true, showValues: true, valueFormat: '',
         unpinAxis: false, tickDensity: default, tickDensityCustom: 5, type: linear}]
     show_y_axis_labels: true
@@ -634,10 +634,10 @@
       credits: "#34A853"
       total_cost: "#E8EAED"
       4_week_average: "#5F6368"
-      gcp_billing__credits.total_amount: "#34A853"
+      gcp_billing_export__credits.total_amount: "#34A853"
     series_labels:
       4_week_average: 4-Week Net Cost Rolling Avg.
-      gcp_billing__credits.total_amount: Credit%
+      gcp_billing_export__credits.total_amount: Credit%
       net_cost: Net Cost%
     show_value_labels: false
     label_density: 25
@@ -656,15 +656,15 @@
     show_silhouette: false
     totals_color: "#808080"
     type: looker_column
-    hidden_fields: [gcp_billing.total_cost, credits, total_cost, 4_week_average]
-    sorts: [gcp_billing.usage_start_week desc]
+    hidden_fields: [gcp_billing_export.total_cost, credits, total_cost, 4_week_average]
+    sorts: [gcp_billing_export.usage_start_week desc]
     dynamic_fields: [{_kind_hint: measure, table_calculation: net_cost, _type_hint: number,
-        category: table_calculation, expression: 'if(is_null(${credits}),${gcp_billing.total_cost},${gcp_billing.total_cost}-${gcp_billing__credits.total_amount})',
+        category: table_calculation, expression: 'if(is_null(${credits}),${gcp_billing_export.total_cost},${gcp_billing_export.total_cost}-${gcp_billing_export__credits.total_amount})',
         label: Net Cost, value_format: !!null '', value_format_name: usd_0}, {_kind_hint: measure,
         table_calculation: credits, _type_hint: number, category: table_calculation,
-        expression: "${gcp_billing__credits.total_amount}*-1", label: Credits, value_format: !!null '',
+        expression: "${gcp_billing_export__credits.total_amount}*-1", label: Credits, value_format: !!null '',
         value_format_name: usd_0}, {_kind_hint: measure, table_calculation: total_cost,
-        _type_hint: number, category: table_calculation, expression: 'if(is_null(${net_cost}),${gcp_billing.total_cost},${gcp_billing.total_cost}-${net_cost})',
+        _type_hint: number, category: table_calculation, expression: 'if(is_null(${net_cost}),${gcp_billing_export.total_cost},${gcp_billing_export.total_cost}-${net_cost})',
         label: Total Cost, value_format: !!null '', value_format_name: usd_0}, {_kind_hint: measure,
         table_calculation: 4_week_average, _type_hint: number, category: table_calculation,
         expression: 'mean(offset_list(${net_cost},0,4))', label: 4-Week Average, value_format: !!null '',
@@ -678,13 +678,13 @@
     model: gcp_billing_block
     explore: gcp_billing_export
     type: looker_bar
-    fields: [gcp_billing__credits.total_amount, gcp_billing.project__name]
+    fields: [gcp_billing_export__credits.total_amount, gcp_billing_export.project__name]
     filters:
-      gcp_billing.usage_start_week: 52 weeks
-    sorts: [gcp_billing__credits.total_amount desc]
+      gcp_billing_export.usage_start_week: 52 weeks
+    sorts: [gcp_billing_export__credits.total_amount desc]
     limit: 10
     dynamic_fields: [{_kind_hint: measure, table_calculation: running_total, _type_hint: number,
-        category: table_calculation, expression: 'running_total(${gcp_billing__credits.total_amount})',
+        category: table_calculation, expression: 'running_total(${gcp_billing_export__credits.total_amount})',
         label: Running Total, value_format: !!null '', value_format_name: usd_0, is_disabled: true}]
     query_timezone: America/Los_Angeles
     x_axis_gridlines: false
@@ -719,8 +719,8 @@
       palette_id: google-categorical-0
       options:
         steps: 5
-    y_axes: [{label: '', orientation: bottom, series: [{axisId: gcp_billing__credits.total_amount,
-            id: gcp_billing__credits.total_amount, name: Total Credit Amount}], showLabels: false,
+    y_axes: [{label: '', orientation: bottom, series: [{axisId: gcp_billing_export__credits.total_amount,
+            id: gcp_billing_export__credits.total_amount, name: Total Credit Amount}], showLabels: false,
         showValues: false, unpinAxis: false, tickDensity: default, tickDensityCustom: 5,
         type: linear}]
     label_value_format: '[<=1000000]$0.0,"K";$0.0,,"M"'
@@ -739,11 +739,11 @@
     model: gcp_billing_block
     explore: gcp_billing_export
     type: looker_waterfall
-    fields: [gcp_billing.project__name, gcp_billing.total_cost]
-    sorts: [gcp_billing.total_cost desc]
+    fields: [gcp_billing_export.project__name, gcp_billing_export.total_cost]
+    sorts: [gcp_billing_export.total_cost desc]
     limit: 10
     dynamic_fields: [{_kind_hint: measure, table_calculation: total_cost, _type_hint: number,
-        category: table_calculation, expression: "${gcp_billing.total_cost}+0", label: Total
+        category: table_calculation, expression: "${gcp_billing_export.total_cost}+0", label: Total
           Cost, value_format: '[>=1000000]$0.0,,"M";$0.0,"K"', value_format_name: !!null ''}]
     query_timezone: America/Los_Angeles
     up_color: "#34A853"
@@ -784,7 +784,7 @@
     totals_color: "#808080"
     defaults_version: 1
     series_types: {}
-    hidden_fields: [gcp_billing.total_cost]
+    hidden_fields: [gcp_billing_export.total_cost]
     listen: {}
     row: 25
     col: 0
@@ -805,8 +805,8 @@
     - model: gcp_billing_block
       explore: gcp_billing_export
       type: looker_grid
-      fields: [gcp_billing.service__description, gcp_billing.total_cost]
-      sorts: [gcp_billing.total_cost desc]
+      fields: [gcp_billing_export.service__description, gcp_billing_export.total_cost]
+      sorts: [gcp_billing_export.total_cost desc]
       limit: 500
       column_limit: 50
       show_view_names: false
@@ -854,12 +854,12 @@
     - model: gcp_billing_block
       explore: gcp_billing_export
       type: table
-      fields: [gcp_billing__credits.total_amount, gcp_billing.service__description]
+      fields: [gcp_billing_export__credits.total_amount, gcp_billing_export.service__description]
       limit: 500
       query_timezone: America/Los_Angeles
       join_fields:
-      - field_name: gcp_billing.service__description
-        source_field_name: gcp_billing.service__description
+      - field_name: gcp_billing_export.service__description
+        source_field_name: gcp_billing_export.service__description
     color_application:
       collection_id: google
       palette_id: google-categorical-0
@@ -872,12 +872,12 @@
     truncate_text: true
     size_to_fit: true
     series_cell_visualizations:
-      gcp_billing.total_cost:
+      gcp_billing_export.total_cost:
         is_active: true
         palette:
           palette_id: google-sequential-0
           collection_id: google
-      gcp_billing__credits.total_amount:
+      gcp_billing_export__credits.total_amount:
         is_active: true
         palette:
           palette_id: google-sequential-0
@@ -891,7 +891,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     series_value_format:
-      gcp_billing__credits.total_amount: '[<=1000000]$0.0,"K";$0.0,,"M"'
+      gcp_billing_export__credits.total_amount: '[<=1000000]$0.0,"K";$0.0,,"M"'
     type: looker_grid
     series_types: {}
     row: 33
@@ -904,8 +904,8 @@
     - model: gcp_billing_block
       explore: gcp_billing_export
       type: looker_grid
-      fields: [gcp_billing.total_cost, gcp_billing.sku__description]
-      sorts: [gcp_billing.total_cost desc]
+      fields: [gcp_billing_export.total_cost, gcp_billing_export.sku__description]
+      sorts: [gcp_billing_export.total_cost desc]
       limit: 500
       column_limit: 50
       show_view_names: false
@@ -953,13 +953,13 @@
     - model: gcp_billing_block
       explore: gcp_billing_export
       type: table
-      fields: [gcp_billing__credits.total_amount, gcp_billing.sku__description]
-      sorts: [gcp_billing__credits.total_amount desc]
+      fields: [gcp_billing_export__credits.total_amount, gcp_billing_export.sku__description]
+      sorts: [gcp_billing_export__credits.total_amount desc]
       limit: 500
       query_timezone: America/Los_Angeles
       join_fields:
-      - field_name: gcp_billing.sku__description
-        source_field_name: gcp_billing.sku__description
+      - field_name: gcp_billing_export.sku__description
+        source_field_name: gcp_billing_export.sku__description
     color_application:
       collection_id: google
       palette_id: google-categorical-0
@@ -972,12 +972,12 @@
     truncate_text: true
     size_to_fit: true
     series_cell_visualizations:
-      gcp_billing.total_cost:
+      gcp_billing_export.total_cost:
         is_active: true
         palette:
           palette_id: google-sequential-0
           collection_id: google
-      gcp_billing__credits.total_amount:
+      gcp_billing_export__credits.total_amount:
         is_active: true
         palette:
           palette_id: google-sequential-0
@@ -991,7 +991,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     series_value_format:
-      gcp_billing__credits.total_amount: '[<=1000000]$0.0,"K";$0.0,,"M"'
+      gcp_billing_export__credits.total_amount: '[<=1000000]$0.0,"K";$0.0,,"M"'
     type: looker_grid
     series_types: {}
     row: 33
@@ -1004,8 +1004,8 @@
     - model: gcp_billing_block
       explore: gcp_billing_export
       type: looker_grid
-      fields: [gcp_billing.total_cost, gcp_billing.location__region]
-      sorts: [gcp_billing.total_cost desc]
+      fields: [gcp_billing_export.total_cost, gcp_billing_export.location__region]
+      sorts: [gcp_billing_export.total_cost desc]
       limit: 500
       column_limit: 50
       show_view_names: false
@@ -1053,13 +1053,13 @@
     - model: gcp_billing_block
       explore: gcp_billing_export
       type: table
-      fields: [gcp_billing__credits.total_amount, gcp_billing.location__region]
-      sorts: [gcp_billing__credits.total_amount desc]
+      fields: [gcp_billing_export__credits.total_amount, gcp_billing_export.location__region]
+      sorts: [gcp_billing_export__credits.total_amount desc]
       limit: 500
       query_timezone: America/Los_Angeles
       join_fields:
-      - field_name: gcp_billing.location__region
-        source_field_name: gcp_billing.location__region
+      - field_name: gcp_billing_export.location__region
+        source_field_name: gcp_billing_export.location__region
     color_application:
       collection_id: google
       palette_id: google-categorical-0
@@ -1072,12 +1072,12 @@
     truncate_text: true
     size_to_fit: true
     series_cell_visualizations:
-      gcp_billing.total_cost:
+      gcp_billing_export.total_cost:
         is_active: true
         palette:
           palette_id: google-sequential-0
           collection_id: google
-      gcp_billing__credits.total_amount:
+      gcp_billing_export__credits.total_amount:
         is_active: true
         palette:
           palette_id: google-sequential-0
@@ -1091,7 +1091,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     series_value_format:
-      gcp_billing__credits.total_amount: '[<=1000000]$0.0,"K";$0.0,,"M"'
+      gcp_billing_export__credits.total_amount: '[<=1000000]$0.0,"K";$0.0,,"M"'
     type: looker_grid
     series_types: {}
     row: 39
@@ -1104,8 +1104,8 @@
     - model: gcp_billing_block
       explore: gcp_billing_export
       type: looker_grid
-      fields: [gcp_billing.total_cost, gcp_billing.billing_account_id]
-      sorts: [gcp_billing.total_cost desc]
+      fields: [gcp_billing_export.total_cost, gcp_billing_export.billing_account_id]
+      sorts: [gcp_billing_export.total_cost desc]
       limit: 500
       column_limit: 50
       show_view_names: false
@@ -1153,13 +1153,13 @@
     - model: gcp_billing_block
       explore: gcp_billing_export
       type: table
-      fields: [gcp_billing__credits.total_amount, gcp_billing.billing_account_id]
-      sorts: [gcp_billing__credits.total_amount desc]
+      fields: [gcp_billing_export__credits.total_amount, gcp_billing_export.billing_account_id]
+      sorts: [gcp_billing_export__credits.total_amount desc]
       limit: 500
       query_timezone: America/Los_Angeles
       join_fields:
-      - field_name: gcp_billing.billing_account_id
-        source_field_name: gcp_billing.billing_account_id
+      - field_name: gcp_billing_export.billing_account_id
+        source_field_name: gcp_billing_export.billing_account_id
     color_application:
       collection_id: google
       palette_id: google-categorical-0
@@ -1172,12 +1172,12 @@
     truncate_text: true
     size_to_fit: true
     series_cell_visualizations:
-      gcp_billing.total_cost:
+      gcp_billing_export.total_cost:
         is_active: true
         palette:
           palette_id: google-sequential-0
           collection_id: google
-      gcp_billing__credits.total_amount:
+      gcp_billing_export__credits.total_amount:
         is_active: true
         palette:
           palette_id: google-sequential-0
@@ -1191,7 +1191,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     series_value_format:
-      gcp_billing__credits.total_amount: '[<=1000000]$0.0,"K";$0.0,,"M"'
+      gcp_billing_export__credits.total_amount: '[<=1000000]$0.0,"K";$0.0,,"M"'
     type: looker_grid
     series_types: {}
     row: 39
@@ -1203,13 +1203,13 @@
     model: gcp_billing_block
     explore: gcp_billing_export
     type: looker_line
-    fields: [gcp_billing.total_cost, gcp_billing.usage_start_month_name, gcp_billing.usage_start_year]
-    pivots: [gcp_billing.usage_start_year]
+    fields: [gcp_billing_export.total_cost, gcp_billing_export.usage_start_month_name, gcp_billing_export.usage_start_year]
+    pivots: [gcp_billing_export.usage_start_year]
     filters:
-      gcp_billing.currency: USD
-      gcp_billing.usage_start_year: 3 years ago for 3 years,1 years
-      gcp_billing.total_cost: NOT NULL
-    sorts: [gcp_billing.usage_start_year, gcp_billing.usage_start_month_name]
+      gcp_billing_export.currency: USD
+      gcp_billing_export.usage_start_year: 3 years ago for 3 years,1 years
+      gcp_billing_export.total_cost: NOT NULL
+    sorts: [gcp_billing_export.usage_start_year, gcp_billing_export.usage_start_month_name]
     limit: 500
     column_limit: 50
     x_axis_gridlines: false
@@ -1241,9 +1241,9 @@
       palette_id: google-categorical-0
       options:
         steps: 5
-    y_axes: [{label: '', orientation: left, series: [{axisId: gcp_billing.total_cost,
-            id: 2020 - gcp_billing.total_cost, name: '2020'}, {axisId: gcp_billing.total_cost,
-            id: 2021 - gcp_billing.total_cost, name: '2021'}], showLabels: true, showValues: true,
+    y_axes: [{label: '', orientation: left, series: [{axisId: gcp_billing_export.total_cost,
+            id: 2020 - gcp_billing_export.total_cost, name: '2020'}, {axisId: gcp_billing_export.total_cost,
+            id: 2021 - gcp_billing_export.total_cost, name: '2021'}], showLabels: true, showValues: true,
         valueFormat: '[>=1000000]$0.0,,"M";$0,"K"', unpinAxis: false, tickDensity: default,
         tickDensityCustom: 5, type: linear}]
     series_types: {}
