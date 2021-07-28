@@ -1,4 +1,4 @@
-- dashboard: gcp_summary
+- dashboard: cost_summary
   title: GCP Summary
   layout: newspaper
   preferred_viewer: dashboards-next
