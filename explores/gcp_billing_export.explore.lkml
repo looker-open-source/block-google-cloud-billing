@@ -4,11 +4,6 @@ explore: gcp_billing_export {
   label: "Billing"
   join: gcp_billing_export__labels {
     sql: ,UNNEST(${gcp_billing_export.labels}) as gcp_billing_export__labels ;;
-    relationship: one_to_one
-  }
-
-  join: gcp_billing_export__credits {
-    sql: ,UNNEST(${gcp_billing_export.credits}) as gcp_billing_export__credits ;;
     relationship: one_to_many
   }
 
@@ -19,6 +14,11 @@ explore: gcp_billing_export {
 
   join: gcp_billing_export__project__labels {
     sql: ,UNNEST(${gcp_billing_export.project__labels}) as gcp_billing_export__project__labels ;;
+    relationship: one_to_many
+  }
+  
+    join: gcp_billing_export__credits {
+    sql: ,UNNEST(${gcp_billing_export.credits}) as gcp_billing_export__credits ;;
     relationship: one_to_many
   }
 
