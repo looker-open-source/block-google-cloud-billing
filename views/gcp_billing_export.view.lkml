@@ -387,17 +387,17 @@ view: gcp_billing_export__labels {
     type: string
     sql: ${TABLE}.value ;;
   }
-
-  measure: key_value {
-    hidden: yes
-    type: string
-    sql: STRING_AGG(concat(${key},':',${value}),',') ;;
-  }
 }
 
 view: gcp_billing_export__credits {
   view_label: "Credits"
   drill_fields: [id]
+
+  dimension: pk {
+    primary_key: yes
+    hidden: yes
+    sql: concat(${name},${gcp_billing_export.pk},${amount}) ;;
+  }
 
   dimension: id {
     type: string
@@ -467,7 +467,6 @@ view: gcp_billing_export__credits {
 
 view: gcp_billing_export__system_labels {
   view_label: "Labels"
-
   dimension: key {
     group_label: "System"
     type: string
