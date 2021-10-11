@@ -6,7 +6,7 @@ view: gcp_billing_export {
     datagroup_trigger: billing_datagroup
     increment_key: "export_date"
     increment_offset: 0
-    sql: select *, generate_uuid() as pk from `@{BILLING_TABLE}`
+    sql: select *, generate_uuid() as pk from @{BILLING_TABLE}
     WHERE {% incrementcondition %} export_time {% endincrementcondition %};;
   }
 
@@ -376,6 +376,7 @@ view: gcp_billing_export {
 
 view: gcp_billing_export__labels {
   view_label: "Labels"
+
   dimension: key {
     group_label: "Billing Export"
     type: string
@@ -421,7 +422,9 @@ view: gcp_billing_export__credits {
 
   dimension: type {
     type: string
-    sql: ${TABLE}.type ;;
+    sql: case when ${name} like "%Committed Usage%" then "COMMITTED_USAGE_DISCOUNT"
+              when ${name} like "%Sustained Usage%" then "SUSTAINED_USAGE_DISCOUNT"
+              else ${TABLE}.type end;;
     drill_fields: [name]
   }
 
