@@ -83,6 +83,16 @@ view: gcp_billing_export {
     type: string
     sql: ${TABLE}.billing_account_id ;;
   }
+  
+  dimension: cloud {
+    type: string
+    sql: 'GCPe' ;;
+    link: {
+      label: "{{ value }} Cost Management"
+      url: "/dashboards/gcp_billing::gcp_summary"
+      icon_url: "looker.com/favicon.ico"
+    }
+  }
 
   dimension: cost {
     type: number
