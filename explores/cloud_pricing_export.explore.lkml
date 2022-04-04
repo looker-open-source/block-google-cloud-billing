@@ -1,3 +1,4 @@
+include: "/views/cloud_pricing_export.view"
 
 explore: cloud_pricing_export {
   label: "Pricing Taxonomy"
