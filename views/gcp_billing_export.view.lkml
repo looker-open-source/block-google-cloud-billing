@@ -83,7 +83,7 @@ view: gcp_billing_export {
     type: string
     sql: ${TABLE}.billing_account_id ;;
   }
-  
+
   dimension: cloud {
     type: string
     sql: 'GCPe' ;;
@@ -337,6 +337,28 @@ view: gcp_billing_export {
     sql: ${TABLE}.usage_start_time ;;
   }
 
+  ## Hidden Nested Fields for Joins
+
+  dimension: project { # Nested record
+    hidden: yes
+    sql: ${TABLE}.project ;;
+  }
+
+  dimension: service { # Nested record
+    hidden: yes
+    sql: ${TABLE}.service ;;
+  }
+
+  dimension: sku { # Nested record
+    hidden: yes
+    sql: ${TABLE}.sku ;;
+  }
+
+  dimension: usage { # Nested record
+    hidden: yes
+    sql: ${TABLE}.usage ;;
+  }
+
   measure: count {
     hidden: no
     type: count
@@ -505,5 +527,230 @@ view: gcp_billing_export__project__labels {
      group_label: "Project"
     type: string
     sql: ${TABLE}.value ;;
+  }
+}
+
+view: gcp_billing_export_service {
+
+  ### Field description reference https://cloud.google.com/billing/docs/how-to/export-data-bigquery
+### DIMENSIONS
+
+  dimension: id {
+    description: "The ID of the service that the usage is associated with."
+    hidden: yes
+    type: string
+    sql: ${TABLE}.id ;;
+  }
+
+  dimension: description {
+    label: "Service"
+    description: "The Google Cloud Platform service that reported the billing data."
+    type: string
+    sql: ${TABLE}.description ;;
+    full_suggestions: yes
+    drill_fields: [gcp_billing_export_project.name, gcp_billing_export.sku_category, gcp_billing_export_sku.description]
+  }
+
+### For one-vs-many project tiles on billing_by_project dashboard
+
+  filter: service_comparison {
+    type: string
+  }
+
+  dimension: service_compare  {
+    type: yesno
+    sql: {% condition service_comparison %} ${description} {% endcondition %} ;;
+  }
+
+### MEASURES
+
+  measure: service_filter { #Made for single value visualization
+    type: string
+    sql: {% if description._is_filtered %}
+         STRING_AGG(DISTINCT ${description}, ", ")
+         {% else %}
+         ANY_VALUE("All Services")
+         {% endif %};;
+  }
+}
+
+view: gcp_billing_export_project {
+
+  ### Field description reference https://cloud.google.com/billing/docs/how-to/export-data-bigquery
+### DIMENSIONS
+
+  dimension: id {
+    description: "The ID of the project that generated the billing data."
+    primary_key: yes
+    type: string
+    sql: ${TABLE}.id ;;
+  }
+
+  dimension: labels { # For use only if labels are present https://cloud.google.com/resource-manager/docs/using-labels
+    hidden: yes
+    sql: ${TABLE}.labels ;;
+  }
+
+  dimension: name {
+    label: "Project Name"
+    description: "The name of the project that generated the billing data."
+    type: string
+    full_suggestions: yes
+    sql: ${TABLE}.name;;
+    drill_fields: [gcp_billing_export_service.description, gcp_billing_export.sku_category, gcp_billing_export_sku.description]
+  }
+
+### For one-vs-many project tiles on billing_by_project dashboard
+
+  filter: project_comparison {
+    type: string
+  }
+
+  dimension: project_compare  {
+    type: yesno
+    sql: {% condition project_comparison %} ${name} {% endcondition %} ;;
+  }
+
+### MEASURES
+
+  measure: name_filter { #Made for single value visualization
+    type: string
+    sql: {% if name._is_filtered %}
+         STRING_AGG(DISTINCT ${name}, ", ")
+         {% else %}
+         ANY_VALUE("All Projects")
+         {% endif %};;
+  }
+}
+
+view: service_name_sort {
+  derived_table: {
+    explore_source: gcp_billing_export {
+      column: name { field: gcp_billing_export_service.description }
+      column: total_cost {}
+      derived_column: rank {
+        sql: RANK() OVER (ORDER BY COALESCE(total_cost, 0) DESC) ;;
+      }
+
+      bind_filters: {
+        to_field: gcp_billing_export.export_time
+        from_field: gcp_billing_export.export_time
+      }
+      bind_filters: {
+        to_field: gcp_billing_export.usage_start_date
+        from_field: gcp_billing_export.usage_start_date
+      }
+      bind_filters: {
+        to_field: gcp_billing_export_project.name
+        from_field: gcp_billing_export_project.name
+      }
+      bind_filters: {
+        to_field: gcp_billing_export_service.description
+        from_field: gcp_billing_export_service.description
+      }
+    }
+  }
+
+  dimension: name {
+    label: "Service Name"
+    primary_key: yes
+    hidden: yes
+  }
+  dimension: top_10_services {
+    description: "If a service is within the Top 10 based in total cost, then its individual name appears in the dimension output. Otherwise, it's bucketed into the 'Other' section."
+    sql:  CASE WHEN ${rank} <= 10 THEN ${name}
+               ELSE 'Other'
+               END;;
+    hidden: no
+    order_by_field: rank_10
+  }
+  dimension: total_cost {
+    label: "Total Cost"
+    description: "The total cost associated to the SKU, between the Start Date and End Date"
+    value_format: "#,##0.00"
+    type: number
+    hidden: yes
+  }
+  dimension: rank {
+    type: number
+    hidden: yes
+  }
+
+  dimension: rank_10 {
+    type:  number
+    hidden:  yes
+    sql:  CASE WHEN ${rank} <= 10 THEN ${rank}
+          ELSE 11
+          END ;;
+  }
+}
+
+view: project_name_sort {
+
+  ### NDT created to achieve ordering in visualization based on total cost
+
+  derived_table: {
+    explore_source: gcp_billing_export {
+      column: name { field: gcp_billing_export_project.name }
+      column: total_cost {}
+      derived_column: rank {
+        sql: RANK() OVER (ORDER BY COALESCE(total_cost, 0) DESC) ;;
+      }
+
+      bind_filters: {
+        to_field: gcp_billing_export.export_time
+        from_field: gcp_billing_export.export_time
+      }
+      bind_filters: {
+        to_field: gcp_billing_export.usage_start_date
+        from_field: gcp_billing_export.usage_start_date
+      }
+      bind_filters: {
+        to_field: gcp_billing_export_project.name
+        from_field: gcp_billing_export_project.name
+      }
+      bind_filters: {
+        to_field: gcp_billing_export_service.description
+        from_field: gcp_billing_export_service.description
+      }
+    }
+  }
+
+### DIMENSIONS
+
+  dimension: name {
+    label: "Project Name"
+    primary_key: yes
+    hidden: yes
+  }
+
+  dimension: top_10_projects {
+    description: "If a project is within the Top 10 based in total cost, then its individual name appears in the dimension output. Otherwise, it's bucketed into the 'Other' section."
+    sql:  CASE WHEN ${rank} <= 10 THEN ${name}
+               ELSE 'Other'
+               END;;
+    hidden: no
+    order_by_field: rank_10
+  }
+
+  dimension: rank_10 { # Provides numeric sorting (10 after 9) for top_10_projects instead of default string sorting (10 before 2)
+    type:  number
+    hidden:  yes
+    sql:  CASE WHEN ${rank} <= 10 THEN ${rank}
+          ELSE 11
+          END ;;
+  }
+
+  dimension: total_cost { # Dimensionalized version of the measure "Total Cost"
+    label: "Total Cost"
+    description: "The total cost associated to the SKU, between the Start Date and End Date"
+    value_format: "#,##0.00"
+    type: number
+    hidden: yes
+  }
+
+  dimension: rank { # Ranks projects by Total Cost
+    type: number
+    hidden: yes
   }
 }

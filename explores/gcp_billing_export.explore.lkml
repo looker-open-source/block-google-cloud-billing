@@ -23,8 +23,29 @@ explore: gcp_billing_export {
     relationship: one_to_many
   }
 
+  join: gcp_billing_export_service {
+    relationship: one_to_one
+    sql: LEFT JOIN UNNEST([${gcp_billing_export.service}]) AS gcp_billing_export_service ;;
+  }
+
+  join: gcp_billing_export_project {
+    sql: LEFT JOIN UNNEST([${gcp_billing_export.project}]) AS gcp_billing_export_project ;;
+    relationship: one_to_one
+  }
+
   join: pricing {
     relationship: one_to_one
     sql_on: ${pricing.sku__id} = ${gcp_billing_export.sku__id} ;;
   }
+
+  join: project_name_sort {
+    relationship: many_to_one
+    sql_on: ${gcp_billing_export_project.name} = ${project_name_sort.name}  ;;
+  }
+
+  join: service_name_sort {
+    relationship: many_to_one
+    sql_on: ${gcp_billing_export_service.description} = ${service_name_sort.name} ;;
+  }
+
 }
