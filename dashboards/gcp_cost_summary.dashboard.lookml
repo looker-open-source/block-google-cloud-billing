@@ -1206,7 +1206,6 @@
     fields: [gcp_billing_export.total_cost, gcp_billing_export.usage_start_month_name, gcp_billing_export.usage_start_year]
     pivots: [gcp_billing_export.usage_start_year]
     filters:
-      gcp_billing_export.currency: USD
       gcp_billing_export.usage_start_year: 3 years ago for 3 years,1 years
       gcp_billing_export.total_cost: NOT NULL
     sorts: [gcp_billing_export.usage_start_year, gcp_billing_export.usage_start_month_name]
