@@ -6,7 +6,7 @@ view: gcp_billing_export {
     datagroup_trigger: billing_datagroup
     increment_key: "export_date"
     increment_offset: 0
-    sql: select *, generate_uuid() as pk from @{BILLING_TABLE}
+    sql: select *, generate_uuid() as pk from `@{BILLING_TABLE}`
     WHERE {% incrementcondition %} export_time {% endincrementcondition %};;
   }
 
