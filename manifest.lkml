@@ -16,6 +16,6 @@ constant: PRICING_TABLE {
 }
 
 constant: CONNECTION {
-  value: "bq-connection"
+  value: "4mile_bigquery_davidb"
   export: override_optional
 }
