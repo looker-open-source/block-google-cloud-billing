@@ -3,6 +3,8 @@
 ___
 # Readme: Google Cloud Billing Looker Block
 
+**This is not an officially supported Google product.**
+
 ### What does this Block do for me?
 
 With the Google Cloud Billing Block, you can:
