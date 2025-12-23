@@ -339,15 +339,10 @@ view: gcp_billing_export {
 
   # --- NEW CUD FIELDS (Added for Migration Support) ---
 
-  dimension: consumption_model {
-    hidden: yes
-    sql: ${TABLE}.consumption_model ;;
-  }
-
   dimension: consumption_model_type {
     type: string
     description: "Indicates if the usage is 'Default' (On-Demand) or covered by a CUD."
-    sql: ${consumption_model}.description ;;
+    sql: ${TABLE}.consumption_model.description ;;
     group_label: "CUD Analysis"
   }
 
