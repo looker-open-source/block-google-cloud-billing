@@ -83,7 +83,7 @@ view: gcp_billing_export {
     type: string
     sql: ${TABLE}.billing_account_id ;;
   }
-  
+
   dimension: cloud {
     type: string
     sql: 'GCPe' ;;
@@ -337,6 +337,27 @@ view: gcp_billing_export {
     sql: ${TABLE}.usage_start_time ;;
   }
 
+  # --- NEW CUD FIELDS (Added for Migration Support) ---
+
+  dimension: consumption_model {
+    hidden: yes
+    sql: ${TABLE}.consumption_model ;;
+  }
+
+  dimension: consumption_model_type {
+    type: string
+    description: "Indicates if the usage is 'Default' (On-Demand) or covered by a CUD."
+    sql: ${consumption_model}.description ;;
+    group_label: "CUD Analysis"
+  }
+
+  dimension: list_price {
+    type: number
+    description: "The gross list price of the SKU before discounts."
+    sql: ${TABLE}.price.list_price ;;
+    value_format_name: decimal_4
+  }
+
   measure: count {
     hidden: no
     type: count
@@ -366,6 +387,7 @@ view: gcp_billing_export {
   }
 
   measure: total_cost {
+    description: "Total Cost. HEADS UP: Under the new CUD model, this reflects List Price. Use Net Cost for actual spend."
     type: sum
     sql: ${cost} ;;
     value_format: "#,##0.00"
@@ -432,9 +454,12 @@ view: gcp_billing_export__credits {
 
   dimension: type {
     type: string
-    sql: case when ${name} like "%Committed Usage%" then "COMMITTED_USAGE_DISCOUNT"
-              when ${name} like "%Sustained Usage%" then "SUSTAINED_USAGE_DISCOUNT"
-              else ${TABLE}.type end;;
+    sql: CASE
+            WHEN ${TABLE}.type = 'FEE_UTILIZATION_OFFSET' THEN 'FEE_UTILIZATION_OFFSET'
+            WHEN ${name} LIKE "%Committed Usage%" THEN "COMMITTED_USAGE_DISCOUNT"
+            WHEN ${name} LIKE "%Sustained Usage%" THEN "SUSTAINED_USAGE_DISCOUNT"
+            ELSE ${TABLE}.type
+          END;;
     drill_fields: [name]
   }
 
@@ -475,6 +500,17 @@ view: gcp_billing_export__credits {
     sql: -1*${amount} ;;
     filters: [gcp_billing_export__credits.type: "PROMOTION"]
     drill_fields: [gcp_billing_export__credits.id,gcp_billing_export__credits.name,total_amount]
+  }
+
+  measure: total_fee_utilization_offset {
+    view_label: "Credits"
+    group_label: "Credits Breakdown"
+    type: sum
+    value_format: "#,##0.00"
+    html: <a href="#drillmenu" target="_self">{{ gcp_billing_export.currency_symbol._value }}{{ rendered_value }}</a>;;
+    sql: -1*${amount} ;;
+    filters: [type: "FEE_UTILIZATION_OFFSET"]
+    description: "The offset credit that balances the CUD List Price cost."
   }
 }
 
