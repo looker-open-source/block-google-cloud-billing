@@ -25,6 +25,13 @@ There are several view files:
 - [period_over_period](/views/period_over_period.view.lkml) - fields specific to period over period analysis, for example looking at current Year to Date spend compared to Prior
 - [currency_symbols](/views/currency_symbols.view.lkml) - customizes the html for spend metrics to include the currency symbol specific to the currency set in the billing export
 
+#### Schema Support (Legacy vs. New CUD Model)
+
+This block is updated to natively support the **CUDs Multiprice Data Model** (Proportional Attribution).
+
+* **Native Support:** The `gcp_billing_export` view now includes fields like `consumption_model` and `list_price`, along with updated logic for `credits` to handle offsets.
+* **Legacy Compatibility:** If you are still on the Legacy billing schema, the core financial metrics (e.g., `Total Net Cost`) remain accurate and safe to use. **Note:** Attempting to query the specific new CUD fields (like `list_price`) before your BigQuery table has been migrated may result in database errors, as those columns do not exist in the legacy schema.
+
 Note: this block leverages [presistent derived tables](https://docs.looker.com/data-modeling/learning-lookml/derived-tables#temporary_and_persistent_derived_tables) and [incremental derived tables](https://docs.looker.com/data-modeling/learning-lookml/derived-tables#incrementally_building_pdts). Please make sure these are enabled in your Looker instance in order to use.
 
 ### Customizing the Model
